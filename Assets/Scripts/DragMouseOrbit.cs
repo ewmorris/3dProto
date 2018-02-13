@@ -38,14 +38,14 @@ public class DragMouseOrbit : MonoBehaviour
             {
                 velocityX += xSpeed * Input.GetAxis("Mouse X") * distance * 0.02f;
                 velocityY += ySpeed * Input.GetAxis("Mouse Y") * 0.02f;
-
             }
-
-            if(Input.GetAxis("4") > 0 || Input.GetAxis("5") > 0)
+            else if (Input.GetAxis("HorizontalTurn") > 0 || Input.GetAxis("VerticalTurn") > 0)
             {
-                velocityX += xSpeed * Input.GetAxis("4") * distance * 0.02f;
-                velocityY += ySpeed * Input.GetAxis("5") * 0.02f;
+                print("fail");
+                velocityX += xSpeed * Input.GetAxis("HorizontalTurn") * distance * 0.02f;
+                velocityY += ySpeed * Input.GetAxis("VerticalTurn") * 0.02f;
             }
+
             rotationYAxis += velocityX;
             rotationXAxis -= velocityY;
             rotationXAxis = ClampAngle(rotationXAxis, yMinLimit, yMaxLimit);
