@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour {
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-        if(Input.GetKeyDown("space"))
+        if(Input.GetKeyDown("space") || Input.GetAxis("XboxOneA") > 0)
         {
             movement.y = jumpHeight;
         }
