@@ -41,7 +41,6 @@ public class DragMouseOrbit : MonoBehaviour
             }
             else if (Input.GetAxis("HorizontalTurn") > 0 || Input.GetAxis("VerticalTurn") > 0)
             {
-                print("fail");
                 velocityX += xSpeed * Input.GetAxis("HorizontalTurn") * distance * 0.02f;
                 velocityY += ySpeed * Input.GetAxis("VerticalTurn") * 0.02f;
             }
