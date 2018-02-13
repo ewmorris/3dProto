@@ -21,8 +21,22 @@ public class ThirdPersonCamera : MonoBehaviour {
     void LateUpdate()
     {
         // Set the position of the camera's transform to be the same as the player's, but offset by the calculated offset distance.
+        //if(Input.GetAxis("Fire2") == 1)
+        //{
+        //    var mouseMoveX = Input.GetAxis("Mouse X");
+        //    var mouseMoveY = Input.GetAxis("Mouse Y");
+        //    if (offset.x + mouseMoveX < offsetBegin.x + 3 && offset.x + mouseMoveX > offsetBegin.x - 3)
+        //    {
+        //        offset.x += mouseMoveX;
+        //    }
+        //    if (offset.y + mouseMoveY < offsetBegin.y + 3 && offset.y + mouseMoveY > offsetBegin.y - 3)
+        //    {
+        //        offset.y += mouseMoveY;
+        //    }
+        //}
+        
         float moveMouseWheel = Input.GetAxis("Mouse ScrollWheel");
-
+        transform.LookAt(player.transform);
         if(Input.GetAxis("Fire3") == 1)
         {
             offset = offsetBegin;
