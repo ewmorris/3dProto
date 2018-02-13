@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour {
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
         //Try this
-        if(Input.GetKeyDown("space") || Input.GetAxis("XboxOneA") > 0)
+        if(Input.GetKeyDown("space") || Input.GetKeyDown("joystick button 0"))
         {
             movement.y = jumpHeight;
         }
