@@ -398,7 +398,7 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 0.84
+  m_Height: 0.77
   m_Radius: 0.25
   m_SlopeLimit: 45
   m_StepOffset: 0.3
@@ -417,12 +417,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 4
-  jumpHeight: 15
+  jumpHeight: 11
   contPlayer: {fileID: 1519061992}
   gravityScale: 0.1
-  maxGrav: 0.1
-  minGrav: 0.05
-  MoveDirY: 0
+  maxGrav: 0.05
+  minGrav: 0.025
+  moveFriction: 0.01
   pushPower: 2
 --- !u!23 &1519061994
 MeshRenderer:
@@ -472,7 +472,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1519061991}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.9500003, y: 7.49, z: -2.63}
+  m_LocalPosition: {x: -2.9500003, y: 7.85, z: -2.63}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1510459004}
@@ -822,8 +822,8 @@ Light:
     m_Resolution: 3
     m_CustomResolution: -1
     m_Strength: 1
-    m_Bias: 0.2
-    m_NormalBias: 0.1
+    m_Bias: 0.05
+    m_NormalBias: 0
     m_NearPlane: 0.2
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
