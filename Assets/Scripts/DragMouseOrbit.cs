@@ -54,7 +54,7 @@ public class DragMouseOrbit : MonoBehaviour
 
             distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * 5, distanceMin, distanceMax);
             RaycastHit hit;
-            if (Physics.Linecast(target.position, transform.position, out hit))
+            if (Physics.Linecast(target.position, transform.position, out hit) && distance != distanceMin)
             {
                 distance -= hit.distance;
             }

@@ -6,10 +6,14 @@ public class PlayerController : MonoBehaviour {
     //Global Variables
     public float speed;
     public float jumpHeight;
-    //public Rigidbody rbPlayer;
     public CharacterController contPlayer;
     private Vector3 moveDir;
     public float gravityScale;
+    public float maxGrav;
+    public float minGrav;
+    private float moveHor;
+    private float moveVert;
+    public float moveFriction;
 
 	// Use this for initialization
 	void Start () {
@@ -19,18 +23,51 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        moveDir = new Vector3(Input.GetAxis("Horizontal") * speed, 0f, Input.GetAxis("Vertical")*speed);
+        //Movement
 
-        if(Input.GetButtonDown("Jump"))
+        moveDir = new Vector3(Input.GetAxis("Horizontal")*speed, moveDir.y, Input.GetAxis("Vertical")*speed);
+        
+
+
+        //Jump
+        if(Input.GetButtonDown("Jump") && contPlayer.isGrounded)
         {
             moveDir.y = jumpHeight;
         }
 
+        //Decreasing jump height if nor holding button
+        //Max jump height of jumpHeight
+        //min of 0.5 * jumpHeight
+        if(Input.GetButtonUp("Jump") && !contPlayer.isGrounded && moveDir.y>jumpHeight/2)
+        {
+            moveDir.y = 0f;
+        }
+        //Adjusting gravity for ascent and descent
+
+        //Descent gravity
+        if(moveDir.y<0 && gravityScale != minGrav )
+        {
+            gravityScale = minGrav;
+        }
+
+        //Ascent gravity
+        if(contPlayer.isGrounded && gravityScale != maxGrav)
+        {
+            gravityScale = maxGrav;
+        }
+        
+        //apply jump
         moveDir.y = moveDir.y + Physics.gravity.y * gravityScale;
+
+        
         contPlayer.Move(moveDir*Time.deltaTime);
 
-        //rotate based on camera
+        if (contPlayer.isGrounded)
+        {
+            moveDir.y = 0f;
+        }
 
+        //rotate based on camera
     }
 
     private void FixedUpdate()

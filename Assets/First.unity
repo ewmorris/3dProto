@@ -416,10 +416,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86928611867c02c44b33ba81a3e49e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  jumpHeight: 50
+  speed: 4
+  jumpHeight: 15
   contPlayer: {fileID: 1519061992}
-  gravityScale: 0.5
+  gravityScale: 0.1
+  maxGrav: 0.1
+  minGrav: 0.05
+  MoveDirY: 0
   pushPower: 2
 --- !u!23 &1519061994
 MeshRenderer:
@@ -707,8 +710,8 @@ MonoBehaviour:
   ySpeed: 10
   yMinLimit: -20
   yMaxLimit: 80
-  distanceMin: 0.5
-  distanceMax: 15
+  distanceMin: 2
+  distanceMax: 6
   smoothTime: 2
 --- !u!1 &1853582513
 GameObject:
@@ -819,8 +822,8 @@ Light:
     m_Resolution: 3
     m_CustomResolution: -1
     m_Strength: 1
-    m_Bias: 0
-    m_NormalBias: 0
+    m_Bias: 0.2
+    m_NormalBias: 0.1
     m_NearPlane: 0.2
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
