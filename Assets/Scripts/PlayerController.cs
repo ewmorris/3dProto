@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour {
         //min of 0.5 * jumpHeight
         if(Input.GetButtonUp("Jump") && !contPlayer.isGrounded && moveDir.y>jumpHeight/2)
         {
-            moveDir.y = 0f;
+            moveDir.y = moveDir.y*0.5f;
         }
         //Adjusting gravity for ascent and descent
 
