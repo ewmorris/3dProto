@@ -15,7 +15,7 @@ public class PlayerRigidbody : MonoBehaviour {
     public Vector3 forceGravity;
     public float groundDist;
     public Collider colPlayer;
-    private float gravity = -981f;
+    private float gravity = -75f;
     public float gravScale;
     public bool checkIsGrounded;
 
@@ -46,15 +46,28 @@ public class PlayerRigidbody : MonoBehaviour {
 
         if (!isGrounded())
         {
-            gravScale = 1.0f;
+            gravScale = 1f;
         }
         else
         {
             gravScale = 0.0f;
         }
 
+        if(inputH > 0)
+        {
+            var test = " ";
+        }
+
         //calculating input forces
-        forceApplied = new Vector3(inputH * speed, gravity * gravScale * Time.deltaTime, inputV * speed);
+        float xSpeed = inputH * speed;
+        float ySpeed = inputV * speed;
+
+        xSpeed = xSpeed <= -.5f ? -.5f : xSpeed;
+        xSpeed = xSpeed >= .5f ? .5f : xSpeed;
+        ySpeed = ySpeed <= -.5f ? -.5f : ySpeed;
+        ySpeed = ySpeed >= .5f ? .5f : ySpeed;
+
+        forceApplied = new Vector3(xSpeed, gravity * gravScale * Time.deltaTime, ySpeed);
 
         //applying input forces
         rbPlayer.AddForce(forceApplied, ForceMode.VelocityChange);
