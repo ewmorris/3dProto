@@ -17,7 +17,8 @@ public class PlayerRigidbody : MonoBehaviour {
     public Collider colPlayer;
     private float gravity = -75f;
     public float gravScale;
-    public bool checkIsGrounded;
+    public float jumpHeight = 28f;
+    public bool isGrounded;
 
 
     // Use this for initialization
@@ -28,47 +29,46 @@ public class PlayerRigidbody : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-
-
         groundDist = colPlayer.bounds.extents.y;
     }
 
     private void FixedUpdate()
     {
-
+        checkIsGrounded();
         //expose velocity in inspector
         showVelocity = rbPlayer.velocity;
 
         inputH = Input.GetAxisRaw("Horizontal");
-        inputV = Input.GetAxisRaw("Vertical");
+        inputV = Input.GetAxisRaw("Vertical");        
 
-        
-
-        if (!isGrounded())
+        if (!isGrounded)
         {
             gravScale = 1f;
         }
         else
         {
             gravScale = 0.0f;
-        }
-
-        if(inputH > 0)
-        {
-            var test = " ";
-        }
+        }        
 
         //calculating input forces
         float xSpeed = inputH * speed;
         float ySpeed = inputV * speed;
 
-        xSpeed = xSpeed <= -.5f ? -.5f : xSpeed;
-        xSpeed = xSpeed >= .5f ? .5f : xSpeed;
-        ySpeed = ySpeed <= -.5f ? -.5f : ySpeed;
-        ySpeed = ySpeed >= .5f ? .5f : ySpeed;
+        //Capping diagnoal move speed
+        if(xSpeed + ySpeed > speed)
+        {
+            var overPercent = 1 - (speed / (xSpeed + ySpeed));
+            xSpeed *= overPercent;
+            ySpeed *= overPercent;
+        }
 
         forceApplied = new Vector3(xSpeed, gravity * gravScale * Time.deltaTime, ySpeed);
 
+        //Adding Jump
+        if ((Input.GetKeyDown("space") || Input.GetKeyDown("joystick button 0")) && isGrounded)
+        {            
+            forceApplied.y = jumpHeight;
+        }
         //applying input forces
         rbPlayer.AddForce(forceApplied, ForceMode.VelocityChange);
 
@@ -81,9 +81,23 @@ public class PlayerRigidbody : MonoBehaviour {
 
     }
 
-    bool isGrounded()
+    private void checkIsGrounded()
     {
-        checkIsGrounded = Physics.Raycast(transform.position, -Vector3.up, groundDist + 0.01f);
-        return checkIsGrounded;
+        isGrounded = Physics.Raycast(transform.position, -Vector3.up, groundDist + 0.01f);
+    }
+
+    public float pushPower = 2.0F;
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {    
+        Rigidbody body = hit.collider.attachedRigidbody;
+        if (body == null || body.isKinematic)
+            return;
+
+        if (hit.moveDirection.y < -0.3F)
+            return;
+
+        Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+        body.velocity = pushDir * pushPower;
     }
 }
