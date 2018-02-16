@@ -15,10 +15,12 @@ public class PlayerRigidbody : MonoBehaviour {
     public Vector3 forceGravity;
     public float groundDist;
     public Collider colPlayer;
-    private float gravity = -75f;
-    public float gravScale;
+    public float gravity = -50f;
+    public float gravityScale;
     public float jumpHeight = 28f;
     public bool isGrounded;
+    public float minGravityScale = .25f;
+    public float maxGravityScale = .5f;
 
 
     // Use this for initialization
@@ -39,16 +41,17 @@ public class PlayerRigidbody : MonoBehaviour {
         showVelocity = rbPlayer.velocity;
 
         inputH = Input.GetAxisRaw("Horizontal");
-        inputV = Input.GetAxisRaw("Vertical");        
+        inputV = Input.GetAxisRaw("Vertical");
 
         if (!isGrounded)
         {
-            gravScale = 1f;
+            gravityScale = .5f;
         }
         else
         {
-            gravScale = 0.0f;
-        }        
+            gravityScale = 0.0f;
+        }
+
 
         //calculating input forces
         float xSpeed = inputH * speed;
@@ -62,23 +65,42 @@ public class PlayerRigidbody : MonoBehaviour {
             ySpeed *= overPercent;
         }
 
-        forceApplied = new Vector3(xSpeed, gravity * gravScale * Time.deltaTime, ySpeed);
+        forceApplied = new Vector3(xSpeed, forceApplied.y = gravity * gravityScale * Time.deltaTime, ySpeed);
 
         //Adding Jump
-        if ((Input.GetKeyDown("space") || Input.GetKeyDown("joystick button 0")) && isGrounded)
-        {            
+        if ((Input.GetButtonDown("Jump")) && isGrounded)
+        {
             forceApplied.y = jumpHeight;
+
+            //Ascent gravity
+            if (isGrounded && gravityScale != maxGravityScale)
+            {
+                gravityScale = maxGravityScale;
+            }
+            isGrounded = false;
         }
+
+        //Decreasing jump height if nor holding button
+        //Max jump height of jumpHeight
+        //min of 0.5 * jumpHeight
+        if (Input.GetButtonUp("Jump") && !isGrounded)
+        {
+            var killJump = -1 * rbPlayer.velocity.y;
+            forceApplied.y = killJump;
+        }
+
+        //Descent gravity
+        if (forceApplied.y < 0 && gravityScale != minGravityScale)
+        {
+            gravityScale = minGravityScale;
+        }
+
+
+
+        forceApplied.y = forceApplied.y + gravity * gravityScale;
+
         //applying input forces
         rbPlayer.AddForce(forceApplied, ForceMode.VelocityChange);
-
-        //applying gravity
-        //forceGravity = new Vector3(0.0f, gravity*gravScale*Time.deltaTime, 0.0f);
-
-        //rbPlayer.AddForce(forceGravity, ForceMode.VelocityChange);
-
-        
-
     }
 
     private void checkIsGrounded()
