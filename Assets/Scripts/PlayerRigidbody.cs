@@ -15,12 +15,31 @@ public class PlayerRigidbody : MonoBehaviour {
     public Vector3 forceGravity;
     public float groundDist;
     public Collider colPlayer;
-    public float gravity = -50f;
+    public float gravity = -9.81f;
     public float gravityScale;
     public float jumpHeight = 28f;
     public bool isGrounded;
     public float minGravityScale = .25f;
     public float maxGravityScale = .5f;
+
+    public float timeTakenDuringLerp = 1f;
+    public float distanceToMove = 1;
+    private Vector3 startPositionLerp;
+    private Vector3 endPositionLerp;
+    private float timeStartedLerping;
+    private bool isLerping;
+
+    /// <summary>
+    /// Sets the inital Lerping datapoints
+    /// </summary>
+    void StartLerping()
+    {
+        isLerping = true;
+        timeStartedLerping = Time.time;
+
+        startPositionLerp = transform.position;
+        endPositionLerp = transform.position + Vector3.up * distanceToMove;
+    }
 
 
     // Use this for initialization
@@ -36,6 +55,7 @@ public class PlayerRigidbody : MonoBehaviour {
 
     private void FixedUpdate()
     {
+        
         checkIsGrounded();
         //expose velocity in inspector
         showVelocity = rbPlayer.velocity;
@@ -68,36 +88,49 @@ public class PlayerRigidbody : MonoBehaviour {
         forceApplied = new Vector3(xSpeed, forceApplied.y = gravity * gravityScale * Time.deltaTime, ySpeed);
 
         //Adding Jump
-        if ((Input.GetButtonDown("Jump")) && isGrounded)
+        if ((Input.GetButtonDown("Jump")) && isGrounded && !isLerping)
         {
-            forceApplied.y = jumpHeight;
+            StartLerping();
+            //forceApplied.y = jumpHeight;
 
-            //Ascent gravity
-            if (isGrounded && gravityScale != maxGravityScale)
-            {
-                gravityScale = maxGravityScale;
-            }
+            ////Ascent gravity
+            //if (isGrounded && gravityScale != maxGravityScale)
+            //{
+            //    gravityScale = maxGravityScale;
+            //}
             isGrounded = false;
         }
 
         //Decreasing jump height if nor holding button
         //Max jump height of jumpHeight
         //min of 0.5 * jumpHeight
-        if (Input.GetButtonUp("Jump") && !isGrounded)
+        //if (Input.GetButtonUp("Jump") && !isGrounded && isLerping)
+        //{
+        //    var killJump = -1 * rbPlayer.velocity.y;
+        //    forceApplied.y = killJump;
+        //}
+
+        if(isLerping)
         {
-            var killJump = -1 * rbPlayer.velocity.y;
-            forceApplied.y = killJump;
+            float timeSinceStarted = Time.time - timeStartedLerping;
+            float percentageComplete = timeSinceStarted / timeTakenDuringLerp;
+            transform.position = Vector3.Lerp(startPositionLerp, endPositionLerp, percentageComplete);
+
+            if (percentageComplete >= 1.0f)
+            {
+                isLerping = false;
+            }
         }
 
-        //Descent gravity
-        if (forceApplied.y < 0 && gravityScale != minGravityScale)
-        {
-            gravityScale = minGravityScale;
-        }
+        ////Descent gravity
+        //if (forceApplied.y < 0 && gravityScale != minGravityScale)
+        //{
+        //    gravityScale = minGravityScale;
+        //}
 
 
 
-        forceApplied.y = forceApplied.y + gravity * gravityScale;
+        //forceApplied.y = forceApplied.y + gravity * gravityScale;
 
         //applying input forces
         rbPlayer.AddForce(forceApplied, ForceMode.VelocityChange);
@@ -108,18 +141,18 @@ public class PlayerRigidbody : MonoBehaviour {
         isGrounded = Physics.Raycast(transform.position, -Vector3.up, groundDist + 0.01f);
     }
 
-    public float pushPower = 2.0F;
+    //public float pushPower = 2.0F;
 
-    void OnControllerColliderHit(ControllerColliderHit hit)
-    {    
-        Rigidbody body = hit.collider.attachedRigidbody;
-        if (body == null || body.isKinematic)
-            return;
+    //void OnControllerColliderHit(ControllerColliderHit hit)
+    //{    
+    //    Rigidbody body = hit.collider.attachedRigidbody;
+    //    if (body == null || body.isKinematic)
+    //        return;
 
-        if (hit.moveDirection.y < -0.3F)
-            return;
+    //    if (hit.moveDirection.y < -0.3F)
+    //        return;
 
-        Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
-        body.velocity = pushDir * pushPower;
-    }
+    //    Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+    //    body.velocity = pushDir * pushPower;
+    //}
 }
