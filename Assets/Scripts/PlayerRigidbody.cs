@@ -26,6 +26,8 @@ public class PlayerRigidbody : MonoBehaviour {
     public bool isJumping;
 
 
+    public Quaternion cameraRotation;
+    public Vector3 cameraPosition;
 
     // Use this for initialization
     void Start() {
@@ -45,6 +47,8 @@ public class PlayerRigidbody : MonoBehaviour {
         checkIsGrounded();
         //expose velocity in inspector
         showVelocity = rbPlayer.velocity;
+        cameraRotation = Camera.main.transform.rotation;
+        cameraPosition = Camera.main.transform.position;
 
         inputH = Input.GetAxisRaw("Horizontal");
         inputV = Input.GetAxisRaw("Vertical");
@@ -76,7 +80,15 @@ public class PlayerRigidbody : MonoBehaviour {
             ySpeed *= overPercent;
         }
 
+
+        //Quaternion newRotation = new Quaternion(Camera.main.transform.rotation.x, Camera.main.transform.rotation.y, Camera.main.transform.rotation.z, 1f);
+
+        Vector3 lookRotation = new Vector3(transform.position.x - Camera.main.transform.position.x, 0f, transform.position.z - Camera.main.transform.position.z);
+        transform.rotation = Quaternion.LookRotation(lookRotation);
+
         forceApplied = new Vector3(xSpeed, forceApplied.y = gravity * gravityScale * Time.deltaTime, ySpeed);
+
+
 
         //Adding Jump
         if ((Input.GetButtonDown("Jump")) && isGrounded )
@@ -137,24 +149,4 @@ public class PlayerRigidbody : MonoBehaviour {
             isJumping = false;
         }
     }
-
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        var test = hit;
-    }
-
-    //public float pushPower = 2.0F;
-
-    //void OnControllerColliderHit(ControllerColliderHit hit)
-    //{    
-    //    Rigidbody body = hit.collider.attachedRigidbody;
-    //    if (body == null || body.isKinematic)
-    //        return;
-
-    //    if (hit.moveDirection.y < -0.3F)
-    //        return;
-
-    //    Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
-    //    body.velocity = pushDir * pushPower;
-    //}
 }
