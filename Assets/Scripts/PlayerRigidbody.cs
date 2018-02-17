@@ -12,6 +12,7 @@ public class PlayerRigidbody : MonoBehaviour {
     public Vector3 showVelocity;
     public float slideCoef;
     public Vector3 forceApplied;
+    public Vector3 jumpApplied;
     public Vector3 forceGravity;
     public float groundDist;
     public Collider colPlayer;
@@ -107,27 +108,28 @@ public class PlayerRigidbody : MonoBehaviour {
         if ((Input.GetButtonDown("Jump")) && isGrounded )
         {
             //StartLerping();
-            forceApplied.y = jumpHeight;
+            jumpApplied = new Vector3(0.0f, jumpHeight, 0.0f);
+            rbPlayer.AddForce(jumpApplied, ForceMode.Impulse);
 
             ////Ascent gravity
-            gravityScale = 0;
-            isGrounded = false;
-            isJumping = true;
+        //    gravityScale = 0;
+        //    isGrounded = false;
+        //    isJumping = true;
         }
 
-        if(isJumping && gravityScale <= minGravityScale)
-        {
-            gravityScale += .001f;
-        }
+        //if(isJumping && gravityScale <= minGravityScale)
+        //{
+        //   gravityScale += .001f;
+        //}
 
         //Decreasing jump height if nor holding button
         //Max jump height of jumpHeight
         //min of 0.5 * jumpHeight
-        if (Input.GetButtonUp("Jump") && !isGrounded && isLerping)
-        {
-            var killJump = -1 * rbPlayer.velocity.y;
-            forceApplied.y = killJump;
-        }
+        //if (Input.GetButtonUp("Jump") && !isGrounded && isLerping)
+        //{
+        //    var killJump = -1 * rbPlayer.velocity.y;
+        //    forceApplied.y = killJump;
+        //}
         
         //if(isLerping)
         //{
