@@ -23,25 +23,8 @@ public class PlayerRigidbody : MonoBehaviour {
     public float minGravityScale = .25f;
     public float maxGravityScale = .5f;
 
-    public float timeTakenDuringLerp = 1f;
-    public float distanceToMove = 2;
-    private Vector3 startPositionLerp;
-    private Vector3 endPositionLerp;
-    private float timeStartedLerping;
-    private bool isLerping;
     public bool isJumping;
 
-    /// <summary>
-    /// Sets the inital Lerping datapoints
-    /// </summary>
-    void StartLerping()
-    {
-        isLerping = true;
-        timeStartedLerping = Time.time;
-
-        startPositionLerp = transform.position;
-        endPositionLerp = transform.position + Vector3.up * distanceToMove;
-    }
 
 
     // Use this for initialization
@@ -80,15 +63,6 @@ public class PlayerRigidbody : MonoBehaviour {
         {
             gravityScale = 0;
         }
-        //if (!isGrounded && !isJumping)
-        //{
-        //    gravityScale = .5f;
-        //}
-        //else if (!isJumping)
-        //{
-        //    gravityScale = 0.0f;
-        //}
-
 
         //calculating input forces
         float xSpeed = inputH * speed;
@@ -130,26 +104,7 @@ public class PlayerRigidbody : MonoBehaviour {
         //    var killJump = -1 * rbPlayer.velocity.y;
         //    forceApplied.y = killJump;
         //}
-        
-        //if(isLerping)
-        //{
-        //    endPositionLerp.x += forceApplied.x;
-        //    endPositionLerp.z += forceApplied.z;
-        //    float timeSinceStarted = Time.time - timeStartedLerping;
-        //    float percentageComplete = timeSinceStarted / timeTakenDuringLerp;
-        //    transform.position = Vector3.Lerp(startPositionLerp, endPositionLerp, percentageComplete);
 
-        //    if (percentageComplete >= 1.0f)
-        //    {
-        //        isLerping = false;
-        //    }
-        //}
-
-        //Descent gravity
-        //if (forceApplied.y < 0 && gravityScale != minGravityScale)
-        //{
-        //    gravityScale = minGravityScale;
-        //}
 
 
 
@@ -161,12 +116,31 @@ public class PlayerRigidbody : MonoBehaviour {
 
     private void checkIsGrounded()
     {
-        isGrounded = Physics.Raycast(transform.position, -Vector3.up, groundDist + 0.01f);
+        var position = transform.position;
+
+        
+
+        var raycast01 = Physics.Raycast(position, Vector3.down, groundDist + 0.01f);
+        position.x -= .13f;
+        var raycast02 = Physics.Raycast(position, Vector3.down, groundDist + 0.01f);
+        position.x += .26f;
+        var raycast03 = Physics.Raycast(position, Vector3.down, groundDist + 0.01f);
+        position.z -= .13f;
+        var raycast04 = Physics.Raycast(position, Vector3.down, groundDist + 0.01f);
+        position.z += .26f;
+        var raycast05 = Physics.Raycast(position, Vector3.down, groundDist + 0.01f);
+
+        isGrounded = (raycast01 || raycast02 || raycast03 || raycast04 || raycast05);
 
         if(isGrounded)
         {
             isJumping = false;
         }
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        var test = hit;
     }
 
     //public float pushPower = 2.0F;
