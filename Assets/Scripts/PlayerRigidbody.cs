@@ -23,11 +23,12 @@ public class PlayerRigidbody : MonoBehaviour {
     public float maxGravityScale = .5f;
 
     public float timeTakenDuringLerp = 1f;
-    public float distanceToMove = 1;
+    public float distanceToMove = 2;
     private Vector3 startPositionLerp;
     private Vector3 endPositionLerp;
     private float timeStartedLerping;
     private bool isLerping;
+    public bool isJumping;
 
     /// <summary>
     /// Sets the inital Lerping datapoints
@@ -46,11 +47,12 @@ public class PlayerRigidbody : MonoBehaviour {
     void Start() {
         rbPlayer = GetComponent<Rigidbody>();
         colPlayer = GetComponent<Collider>();
+        groundDist = colPlayer.bounds.extents.y;
     }
 
     // Update is called once per frame
     void Update() {
-        groundDist = colPlayer.bounds.extents.y;
+        
     }
 
     private void FixedUpdate()
@@ -63,14 +65,28 @@ public class PlayerRigidbody : MonoBehaviour {
         inputH = Input.GetAxisRaw("Horizontal");
         inputV = Input.GetAxisRaw("Vertical");
 
-        if (!isGrounded)
+        if(!isGrounded && gravityScale == 0)
         {
-            gravityScale = .5f;
+            gravityScale = maxGravityScale;
         }
-        else
+
+        if(!isJumping && !isGrounded && gravityScale < minGravityScale)
         {
-            gravityScale = 0.0f;
+            gravityScale = minGravityScale;
         }
+
+        if(!isJumping && isGrounded && gravityScale > 0)
+        {
+            gravityScale = 0;
+        }
+        //if (!isGrounded && !isJumping)
+        //{
+        //    gravityScale = .5f;
+        //}
+        //else if (!isJumping)
+        //{
+        //    gravityScale = 0.0f;
+        //}
 
 
         //calculating input forces
@@ -88,41 +104,46 @@ public class PlayerRigidbody : MonoBehaviour {
         forceApplied = new Vector3(xSpeed, forceApplied.y = gravity * gravityScale * Time.deltaTime, ySpeed);
 
         //Adding Jump
-        if ((Input.GetButtonDown("Jump")) && isGrounded && !isLerping)
+        if ((Input.GetButtonDown("Jump")) && isGrounded )
         {
-            StartLerping();
-            //forceApplied.y = jumpHeight;
+            //StartLerping();
+            forceApplied.y = jumpHeight;
 
             ////Ascent gravity
-            //if (isGrounded && gravityScale != maxGravityScale)
-            //{
-            //    gravityScale = maxGravityScale;
-            //}
+            gravityScale = 0;
             isGrounded = false;
+            isJumping = true;
+        }
+
+        if(isJumping && gravityScale <= maxGravityScale && forceApplied.y >= 0)
+        {
+            gravityScale += .01f;
         }
 
         //Decreasing jump height if nor holding button
         //Max jump height of jumpHeight
         //min of 0.5 * jumpHeight
-        //if (Input.GetButtonUp("Jump") && !isGrounded && isLerping)
+        if (Input.GetButtonUp("Jump") && !isGrounded && isLerping)
+        {
+            var killJump = -1 * rbPlayer.velocity.y;
+            forceApplied.y = killJump;
+        }
+        
+        //if(isLerping)
         //{
-        //    var killJump = -1 * rbPlayer.velocity.y;
-        //    forceApplied.y = killJump;
+        //    endPositionLerp.x += forceApplied.x;
+        //    endPositionLerp.z += forceApplied.z;
+        //    float timeSinceStarted = Time.time - timeStartedLerping;
+        //    float percentageComplete = timeSinceStarted / timeTakenDuringLerp;
+        //    transform.position = Vector3.Lerp(startPositionLerp, endPositionLerp, percentageComplete);
+
+        //    if (percentageComplete >= 1.0f)
+        //    {
+        //        isLerping = false;
+        //    }
         //}
 
-        if(isLerping)
-        {
-            float timeSinceStarted = Time.time - timeStartedLerping;
-            float percentageComplete = timeSinceStarted / timeTakenDuringLerp;
-            transform.position = Vector3.Lerp(startPositionLerp, endPositionLerp, percentageComplete);
-
-            if (percentageComplete >= 1.0f)
-            {
-                isLerping = false;
-            }
-        }
-
-        ////Descent gravity
+        //Descent gravity
         //if (forceApplied.y < 0 && gravityScale != minGravityScale)
         //{
         //    gravityScale = minGravityScale;
@@ -130,7 +151,7 @@ public class PlayerRigidbody : MonoBehaviour {
 
 
 
-        //forceApplied.y = forceApplied.y + gravity * gravityScale;
+        forceApplied.y = forceApplied.y + gravity * gravityScale;
 
         //applying input forces
         rbPlayer.AddForce(forceApplied, ForceMode.VelocityChange);
@@ -139,6 +160,11 @@ public class PlayerRigidbody : MonoBehaviour {
     private void checkIsGrounded()
     {
         isGrounded = Physics.Raycast(transform.position, -Vector3.up, groundDist + 0.01f);
+
+        if(isGrounded)
+        {
+            isJumping = true;
+        }
     }
 
     //public float pushPower = 2.0F;
