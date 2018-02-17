@@ -115,9 +115,9 @@ public class PlayerRigidbody : MonoBehaviour {
             isJumping = true;
         }
 
-        if(isJumping && gravityScale <= maxGravityScale && forceApplied.y >= 0)
+        if(isJumping && gravityScale <= minGravityScale)
         {
-            gravityScale += .01f;
+            gravityScale += .001f;
         }
 
         //Decreasing jump height if nor holding button
@@ -163,7 +163,7 @@ public class PlayerRigidbody : MonoBehaviour {
 
         if(isGrounded)
         {
-            isJumping = true;
+            isJumping = false;
         }
     }
 
