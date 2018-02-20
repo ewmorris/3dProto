@@ -86,7 +86,7 @@ public class PlayerRigidbody : MonoBehaviour {
         Vector3 lookRotation = new Vector3(transform.position.x - Camera.main.transform.position.x, 0f, transform.position.z - Camera.main.transform.position.z);
         transform.rotation = Quaternion.LookRotation(lookRotation);
 
-        forceApplied = new Vector3(xSpeed, forceApplied.y = gravity * gravityScale * Time.deltaTime, ySpeed);
+        forceApplied = new Vector3(xSpeed, gravity * gravityScale * Time.deltaTime, ySpeed);
 
 
 
@@ -99,31 +99,14 @@ public class PlayerRigidbody : MonoBehaviour {
 
             ////Ascent gravity
         //    gravityScale = 0;
-        //    isGrounded = false;
+        //    isGrounded = false; 
         //    isJumping = true;
         }
 
-        //if(isJumping && gravityScale <= minGravityScale)
-        //{
-        //   gravityScale += .001f;
-        //}
-
-        //Decreasing jump height if nor holding button
-        //Max jump height of jumpHeight
-        //min of 0.5 * jumpHeight
-        //if (Input.GetButtonUp("Jump") && !isGrounded && isLerping)
-        //{
-        //    var killJump = -1 * rbPlayer.velocity.y;
-        //    forceApplied.y = killJump;
-        //}
-
-
-
-
         forceApplied.y = forceApplied.y + gravity * gravityScale;
 
-        //applying input forces
-        rbPlayer.AddForce(forceApplied, ForceMode.VelocityChange);
+        //applying input forces relative to direction
+        rbPlayer.AddRelativeForce(forceApplied, ForceMode.VelocityChange);
     }
 
     private void checkIsGrounded()
