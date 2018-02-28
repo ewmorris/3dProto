@@ -405,7 +405,7 @@ MonoBehaviour:
   gravForce: -9.81
   gravScale: 1
   minGravScale: 0.5
-  maxGravScale: 1
+  maxGravScale: 2
   gravApplied: {x: 0, y: 0, z: 0}
   jumpForce: 10
   jumpApplied: {x: 0, y: 0, z: 0}
@@ -413,8 +413,8 @@ MonoBehaviour:
   isGrounded: 0
   inputH: 0
   inputV: 0
-  maxSpeed: 2
-  speed: 1
+  maxSpeed: 1
+  speed: 0.5
   forceApplied: {x: 0, y: 0, z: 0}
 --- !u!23 &1519061994
 MeshRenderer:
@@ -643,6 +643,8 @@ GameObject:
   - component: {fileID: 1782826487}
   - component: {fileID: 1782826486}
   - component: {fileID: 1782826490}
+  - component: {fileID: 1782826491}
+  - component: {fileID: 1782826492}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -733,6 +735,33 @@ MonoBehaviour:
   distanceMin: 2
   distanceMax: 6
   smoothTime: 2
+--- !u!114 &1782826491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1782826485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: cdc3fac2ae2daaa46a4e759d0a015aeb, type: 2}
+--- !u!114 &1782826492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1782826485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66b96603472f35946ac2d5d8c8b33858, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  focusTargets:
+  - {fileID: 1519061997}
+  focusTargetID: 0
+  aperture: 1.5
 --- !u!1 &1853582513
 GameObject:
   m_ObjectHideFlags: 0

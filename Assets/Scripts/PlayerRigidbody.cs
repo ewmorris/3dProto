@@ -84,6 +84,7 @@ public class PlayerRigidbody : MonoBehaviour {
     private void ApplyGravity()
     {
         gravScale = (rbPlayer.velocity.y < 0)? maxGravScale : minGravScale;
+        gravScale = (isGrounded) ? 0.0f : gravScale;
         gravApplied = new Vector3(0.0f, gravForce * gravScale, 0.0f);
         rbPlayer.AddForce(gravApplied, ForceMode.Acceleration);
     }
