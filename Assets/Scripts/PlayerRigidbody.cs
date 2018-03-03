@@ -28,6 +28,7 @@ public class PlayerRigidbody : MonoBehaviour {
     public float speed;
 
     public Vector3 forceApplied = new Vector3();
+    public PhysicMaterial physMat;
 
     // Use this for initialization
     void Start() {
@@ -39,6 +40,10 @@ public class PlayerRigidbody : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         CheckIsGrounded();
+
+        physMat.dynamicFriction = (isGrounded) ? 0.6f : 0;
+        physMat.staticFriction = (isGrounded) ? 0.6f : 0;
+
         CameraRotation();
     }
 

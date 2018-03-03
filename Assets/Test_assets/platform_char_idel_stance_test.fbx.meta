@@ -1,33 +1,16 @@
 fileFormatVersion: 2
-guid: e9ed8adfe04f423469b4361682cd2874
-timeCreated: 1518598831
+guid: 7742a05bf47090447bc91b3a915786d2
+timeCreated: 1520119648
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: Cube
-    100002: Cube.001
-    100004: Cube.002
-    100006: Plane
-    100008: //RootNode
-    400000: Cube
-    400002: Cube.001
-    400004: Cube.002
-    400006: Plane
-    400008: //RootNode
+    100000: //RootNode
+    400000: //RootNode
     2100000: Material.001
-    2300000: Cube
-    2300002: Cube.001
-    2300004: Cube.002
-    2300006: Plane
-    3300000: Cube
-    3300002: Cube.001
-    3300004: Cube.002
-    3300006: Plane
-    4300000: Cube.002
-    4300002: Cube.001
-    4300004: Cube
-    4300006: Plane
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: player
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -61,10 +44,10 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    importVisibility: 1
-    importBlendShapes: 1
-    importCameras: 1
-    importLights: 1
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
