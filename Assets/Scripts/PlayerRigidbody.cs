@@ -41,8 +41,8 @@ public class PlayerRigidbody : MonoBehaviour {
     void Update() {
         CheckIsGrounded();
 
-        physMat.dynamicFriction = (isGrounded) ? 0.6f : 0;
-        physMat.staticFriction = (isGrounded) ? 0.6f : 0;
+        //physMat.dynamicFriction = (isGrounded) ? 0.6f : 0;
+        //physMat.staticFriction = (isGrounded) ? 0.6f : 0;
 
         CameraRotation();
     }
