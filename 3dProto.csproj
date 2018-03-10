@@ -327,6 +327,7 @@
     <Compile Include="Assets\PostProcessing\Runtime\Utils\MaterialFactory.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Utils\RenderTextureFactory.cs" />
     <Compile Include="Assets\PostProcessing\Utilities\CustomMotionTexture\ExampleWheelController.cs" />
+    <Compile Include="Assets\Scripts\AnimState.cs" />
     <Compile Include="Assets\Scripts\cameraDOF.cs" />
     <Compile Include="Assets\Scripts\CharacterModelController.cs" />
     <Compile Include="Assets\Scripts\DragMouseOrbit.cs" />
